@@ -1,0 +1,37 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@192.168.56.101
+Connecting to 192.168.56.101...
+ysurmd@192.168.56.101's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                              0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                            100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@192.168.56.101
+ysurmd@192.168.56.101's password: .waiting for prompt.
+Last login: Thu Aug  9 17:53:44 2018 from 192.168.56.100
+]0;ysurmd@localhost:~[?1034h[ysurmd@localhost ~]$ export LANG=en_US.UTF-8
+]0;ysurmd@localhost:~[ysurmd@localhost ~]$ whoami
+ysurmd
+]0;ysurmd@localhost:~[ysurmd@localhost ~]$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd
+uid=500(ysurmd) gid=502(staff) groups=502(staff),503(a01db2br),504(a03db2),505(a03db2br) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+]0;ysurmd@localhost:~[ysurmd@localhost ~]$ chmod 777 /tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd
+]0;ysurmd@localhost:~[ysurmd@localhost ~]$ echo Work done
+Work done
+]0;ysurmd@localhost:~[ysurmd@localhost ~]$ spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@192.168.56.101
+Connecting to 192.168.56.101...
+ysurmd@192.168.56.101's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd to inplacelogic.out.192.168.56.101.ysurmd
+/tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd                                                   0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd                                                 100%  151     0.2KB/s   00:00    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.192.168.56.101.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@192.168.56.101:/tmp/HC/HCLauncher/report report
+ysurmd@192.168.56.101's password: 
+test1                                                                                                 0%    0     0.0KB/s   --:-- ETAtest1                                                                                               100%   13     0.0KB/s   00:00    

@@ -1,0 +1,221 @@
+#!/usr/bin/expect
+# To automate repeatable DBA tasks.
+# Version 1.0 by Thiago Cargnelutti - 2013/09/16
+# Version 2.0 by Thiago Cargnelutti - 2014/01/10
+# Version 3.0 by Thiago Cargnelutti - 2014/04/04
+
+set timeout 40 
+set SERVER [lindex $argv 0]
+set resultsOK [open "results.OK.out" a]
+set resultsFail [open "results.Fail.out" a]
+set resultsResolve [open "results.NoResolve.out" a]
+set resultsRespond [open "results.NoResponse.out" a]
+set resultsAuth [open "results.AuthError.out" a] 
+set resultsSudo [open "results.SudoError.out" a] 
+set resultsIDnotExist [open "results.IDnotExist.out" a] 
+set resultsNewPwd [open "results.NewPwd.out" a] 
+set resultsRSA [open "results.RSA.out" a] 
+set myID [lindex $argv 1]
+set myPWD [lindex $argv 2]
+set rootPWD [lindex $argv 3]
+set upload_ksh [lindex $argv 4]
+set extraornot [lindex $argv 5]
+
+if { $extraornot == "0extra" } {
+set logic_ksh [lindex $argv 6]
+set dir [lindex $argv 7]
+} else {
+set logic_ksh [lindex $argv 6]
+set extra_upload [lindex $argv 7]
+set dir [lindex $argv 8]
+}
+
+set ftppush_result 1
+set ftppull 1
+
+set pwdcomes "prompt"
+
+proc getANDclean {myID SERVER myPWD dir} {
+        spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no $myID@$SERVER
+        expect "assword:"
+        send "$myPWD\r"
+        expect "sftp>"
+        send "mget /tmp/$dir/inplacelogic.out.*\r"
+        expect "sftp>"
+        send "rm /tmp/$dir/*\r"
+        expect "sftp>"
+        send "rmdir /tmp/$dir\r"
+        expect "sftp>"
+        send "quit\r"
+        send_user "\n"
+}
+
+if { $upload_ksh == 1 } {
+
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no $myID@$SERVER
+expect {
+        "assword:" {send $myPWD\r}
+        "resolv" {send "echo Server name not resolving\r";set ftppush_result 1;set ftppull 0;puts $resultsResolve "$SERVER";send_user "\n ";exit}
+        "timed out" {send "echo Server not responding\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "No route to host" {send "echo Server not responding\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "close" {send "echo Server not responding\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "refused" {send "echo Server not responding\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "RSA key" {send_user "RSA key changed\r";set ftppush_result 1;set ftppull 0;puts $resultsRSA "$SERVER";send_user "\n ";exit}
+ 	timeout {send "echo Server not responding\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+}
+expect {
+        "sftp>" {send "mkdir /tmp/$dir\r"}
+        "close" {send "echo Connection terminated\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "assword:" {send "echo failed to authenticate\r";set ftppush_result 1;set ftppull 0;puts $resultsAuth "$SERVER";send_user "\n ";exit}
+        timeout {send "echo failed to authenticate\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";exit}
+}
+expect {
+        "sftp>" {send "chmod 777 /tmp/$dir\r"}
+        timeout {send "echo taking too long to create directory\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";getANDclean $myID $SERVER $myPWD $dir;exit}
+}
+expect {
+        "sftp>" {send "put $logic_ksh /tmp/$dir\r"}
+        timeout {send "echo taking too long to create directory\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";getANDclean $myID $SERVER $myPWD $dir;exit}
+}
+expect {
+        "sftp>" {send "chmod 777 /tmp/$dir/$logic_ksh\r"}
+        timeout {send "echo Taking too long to upload script\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";getANDclean $myID $SERVER $myPWD $dir;exit}
+}
+
+if { $extraornot == "1extra" } {
+	expect {
+	        "sftp>" {send "put $extra_upload /tmp/$dir\r"}
+	        "close" {send "echo Connection terminated\r";set ftppush_result 1;set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";break}
+	        "assword:" {send "echo failed to authenticate\r";set ftppush_result 1;set ftppull 0;puts $resultsAuth "$SERVER";send_user "\n ";break}
+	        timeout {send "echo failed to authenticate\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";break}
+	}
+	expect {
+	        "sftp>" {send "chmod 777 /tmp/$dir/$extra_upload\r"}
+	        timeout {send "echo Taking too long to upload script\r";set ftppush_result 1;set ftppull 0;puts $resultsFail "$SERVER";send_user "\n ";break}
+	}
+}
+
+expect "sftp>" {send "quit\r";set ftppush_result 0}
+send_user "\n"
+}
+
+if {$upload_ksh == 0} {
+
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no $myID@$SERVER
+expect {
+        "assword:" {send $myPWD\r}
+        "resolv" {send "echo Server name not resolving\r";set ftppull 0;puts $resultsResolve "$SERVER";send_user "\n ";exit}
+        "timed out" {send "echo Server not responding\r";set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "close" {send "echo Server not responding\r";set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "refused" {send "echo Server not responding\r";set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+        "RSA key" {send_user "RSA key changed\r";set ftppull 0;puts $resultsRSA "$SERVER";send_user "\n ";exit}
+        timeout {send_user "Server not responding\r";set ftppull 0;puts $resultsRespond "$SERVER";send_user "\n ";exit}
+}
+
+set INSTUSER root
+send_user ".waiting for prompt."
+expect "\[#|$|>|~\]*" {send "export LANG=en_US.UTF-8\r";send "sudo su - \r"}
+expect {
+	"assword:" {send "$myPWD\r"}
+	"assword for $INSTUSER:" {send "$myPWD\r"}
+}
+sleep 1
+expect {
+        "assword:" {send_user "failed to su \r";set ftppull 0;puts $resultsSudo "$SERVER ";send_user "\n ";exit}
+	"does not exist" {send "echo User ID not found any more\r"}
+	"\[#|$|>|~\]*" {send "whoami\r"}
+}
+sleep 2
+expect { 
+	$INSTUSER {
+		expect "\[#|$|>|~\]*"
+		send "TO BE REPLACED WHEN GOING SIMPLE\r"
+		send "echo Work done\r"
+		expect "Work done"
+		send "exit\r"
+		set ftppull 1
+		puts $resultsOK "$SERVER $INSTUSER" 
+		sleep 1
+	}
+	$myID {
+		send_user "this is still the personal ID - thus sudo did not work\r"
+		set ftppull 0
+		puts $resultsSudo "$SERVER"
+		send_user "\n "
+	}
+	"User ID not found any more" { 
+		set ftppull 0
+		puts $resultsIDnotExist "$SERVER $INSTUSER"
+		send_user "\n "
+	}
+}
+send "exit\r"
+
+# closing if $upload_ksh == 0
+}
+
+
+if {$ftppush_result == 0 && $upload_ksh == 1} { #two separate IFs with redundant code to avoid ssh connection in case sftp has already failed
+
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no $myID@$SERVER
+expect {
+        "assword:" {send $myPWD\r}
+        timeout {send_user "Server not responding\r";set ftppull 0;puts $resultsRespond "$SERVER $INSTUSER";send_user "\n ";getANDclean $myID $SERVER $myPWD $dir;exit}
+}
+
+set INSTUSER $myID
+send_user ".waiting for prompt."
+
+expect "\[#|$|>|~\]*" {send "export LANG=en_US.UTF-8\r";send "whoami\r"}
+expect {
+       $INSTUSER {
+		expect "\[#|$|>|~\]*"
+		send "sh /tmp/$dir/$logic_ksh | tee /tmp/$dir/inplacelogic.out.$SERVER.$INSTUSER\r"
+		send "chmod 777 /tmp/$dir/inplacelogic.out.$SERVER.$INSTUSER\r"
+                send "echo Work done\r"
+                expect "Work done"
+                send "exit\r"
+		set ftppull 1
+                puts $resultsOK "$SERVER $INSTUSER"
+		sleep 1
+        }
+	"User ID not found any more" { 
+		set ftppull 0
+		puts $resultsIDnotExist "$SERVER $INSTUSER"
+		send_user "\n "
+	}
+}
+#send "exit\r"
+# closing the if $upload_ksh == 0 and ftp_result == 0
+} 
+
+if {$upload_ksh == 1}  {
+	getANDclean $myID $SERVER $myPWD $dir
+}
+
+spawn scp -r $myID@$SERVER:/tmp/HC/HCLauncher/report report
+expect {
+        "*assword:"
+           {
+              send "$myPWD\n"
+           }
+        }
+
+close $resultsOK
+close $resultsFail
+close $resultsResolve
+close $resultsRespond
+close $resultsAuth
+close $resultsSudo
+close $resultsIDnotExist
+close $resultsNewPwd
+close $resultsRSA
+
+send "mkdir $dir"
+send "mv inplacelogic* $dir"
+send "mv results* $dir"
+send "mv output* $dir"
+
+expect eof
+exit
+
