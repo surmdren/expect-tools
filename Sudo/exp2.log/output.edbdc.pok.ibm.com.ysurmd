@@ -1,0 +1,62 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@edbdc.pok.ibm.com
+Connecting to edbdc.pok.ibm.com...
+Warning: Permanently added 'edbdc.pok.ibm.com' (RSA) to the list of known hosts.
+Password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@edbdc.pok.ibm.com
+Password: .waiting for prompt.
+Last login: Wed Apr 25 04:17:52 2018 from 9.200.79.60
+*******************************************************************
+*                                                                 *
+*  IBM's internal systems must only be used for conducting IBM's  *
+*  business, or for purposes authorized by IBM management.        *
+*                                                                 *
+*  Use is subject to audit at any time by IBM management          *
+*                                                                 *
+*  If you are not an authorised user, LOGOUT immediately.         *
+*                                                                 *
+*  THIS SYSTEM IS CURRENTLY BEING MANAGED BY IGA CHEF             *
+*                                                                 *
+*                       IBM Confidential                          *
+*                                                                 *
+*******************************************************************
+For more detailed instructions how to customize this message
+check at
+https://github.ibm.com/IGA-CHEF/cookbook_motd_chef
+
+You can reach us at the Community link:
+https://ibm.biz/BditLd
+
+And please check the Chef development standards and
+best practices:
+http://ibm.biz/Bditu5[?1034hysurmd@edbdc:~> export LANG=en_US.UTF-8
+ysurmd@edbdc:~> whoami
+ysurmd
+ysurmd@edbdc:~> sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd
+uid=50134(ysurmd) gid=100(users) groups=100(users),506(support)
+ysurmd@edbdc:~> chmod 777 /tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd
+ysurmd@edbdc:~> echo Work done
+Work done
+ysurmd@edbdc:~> spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@edbdc.pok.ibm.com
+Connecting to edbdc.pok.ibm.com...
+Password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd to inplacelogic.out.edbdc.pok.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd                                               0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd                                             100%   64     0.1KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.edbdc.pok.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@edbdc.pok.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.56.8.63' to the list of known hosts.
+Password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

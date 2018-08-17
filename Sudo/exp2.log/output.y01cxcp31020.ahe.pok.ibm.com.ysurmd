@@ -1,0 +1,6 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@y01cxcp31020.ahe.pok.ibm.com
+Connecting to y01cxcp31020.ahe.pok.ibm.com...
+ssh: connect to host y01cxcp31020.ahe.pok.ibm.com port 22: Connection refused
+Couldn't read packet: Connection reset by peer
+
+ 

@@ -1,0 +1,13 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@lexnosdb01.pok.ibm.com
+Connecting to lexnosdb01.pok.ibm.com...
+Warning: Permanently added 'lexnosdb01.pok.ibm.com' (RSA) to the list of known hosts.
+Duo two-factor login for surmdren@cn.ibm.com
+
+Enter a passcode or select one of the following options:
+
+ 1. Duo Push to +XX XXX XXXX 6615
+ 2. Phone call to +XX XXX XXXX 6615
+ 3. SMS passcodes to +XX XXX XXXX 6615
+
+Passcode or option (1-3): 
+ 

@@ -1,0 +1,49 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b01aciops001.gho.pok.ibm.com
+Connecting to b01aciops001.gho.pok.ibm.com...
+Warning: Permanently added 'b01aciops001.gho.pok.ibm.com' (RSA) to the list of known hosts.
+ysurmd@b01aciops001.gho.pok.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b01aciops001.gho.pok.ibm.com
+ysurmd@b01aciops001.gho.pok.ibm.com's password: .waiting for prompt.
+Last login: Fri Jun 22 08:49:51 GMT 2018 on ssh from 9.200.79.60
+*******************************************************************************
+*                                                                             *
+*                                                                             *
+*  Welcome to AIX Version 7.1!                                                *
+*                                                                             *
+*                                                                             *
+*  Please see the README file in /usr/lpp/bos for information pertinent to    *
+*  this release of the AIX Operating System.                                  *
+*                                                                             *
+*                                                                             *
+*******************************************************************************
+IBM's internal systems must only be used for conducting IBM's business or for purposes authorized by IBM management.
+$ export LANG=en_US.UTF-8
+whoami
+$ ysurmd
+$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd
+chmod 777 /tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd
+echo Work done
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b01aciops001.gho.pok.ibm.com
+Connecting to b01aciops001.gho.pok.ibm.com...
+ysurmd@b01aciops001.gho.pok.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd to inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd                                    0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd                                  100%   29     0.0KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.b01aciops001.gho.pok.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@b01aciops001.gho.pok.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.57.52.69' to the list of known hosts.
+ysurmd@b01aciops001.gho.pok.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

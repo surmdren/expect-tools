@@ -1,0 +1,7 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@cnlinux.pok.ibm.com
+Connecting to cnlinux.pok.ibm.com...
+Warning: Permanently added 'cnlinux.pok.ibm.com' (RSA) to the list of known hosts.
+Password: 
+Connection closed
+
+ 

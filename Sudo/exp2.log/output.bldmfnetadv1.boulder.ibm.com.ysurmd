@@ -1,0 +1,41 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@bldmfnetadv1.boulder.ibm.com
+Connecting to bldmfnetadv1.boulder.ibm.com...
+Warning: Permanently added 'bldmfnetadv1.boulder.ibm.com' (RSA) to the list of known hosts.
+ysurmd@bldmfnetadv1.boulder.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@bldmfnetadv1.boulder.ibm.com
+ysurmd@bldmfnetadv1.boulder.ibm.com's password: .waiting for prompt.
+Last login: Tue Apr 24 02:44:06 2018 from 9.200.79.60
+IBM's internal systems must only be used for conducting IBM's business or for purposes authorized by IBM Management..
+Use is subject to audit at any time by IBM Management
+]0;ysurmd@bldmfnetadv1:~[?1034h[ysurmd@bldmfnetadv1 ~]$ export LANG=en_US.UTF-8
+]0;ysurmd@bldmfnetadv1:~[ysurmd@bldmfnetadv1 ~]$ whoami
+ysurmd
+]0;ysurmd@bldmfnetadv1:~[ysurmd@bldmfnetadv1 ~]$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd
+uid=541(ysurmd) gid=100(users) groups=100(users),10(wheel)
+]0;ysurmd@bldmfnetadv1:~[ysurmd@bldmfnetadv1 ~]$ chmod 777 /tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd
+]0;ysurmd@bldmfnetadv1:~[ysurmd@bldmfnetadv1 ~]$ echo Work done
+Work done
+]0;ysurmd@bldmfnetadv1:~[ysurmd@bldmfnetadv1 ~]$ spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@bldmfnetadv1.boulder.ibm.com
+Connecting to bldmfnetadv1.boulder.ibm.com...
+ysurmd@bldmfnetadv1.boulder.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd to inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd                                    0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd                                  100%   59     0.1KB/s   00:00    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.bldmfnetadv1.boulder.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@bldmfnetadv1.boulder.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.17.204.241' to the list of known hosts.
+ysurmd@bldmfnetadv1.boulder.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

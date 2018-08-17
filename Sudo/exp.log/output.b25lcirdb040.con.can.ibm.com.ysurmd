@@ -1,0 +1,4 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b25lcirdb040.con.can.ibm.com
+Connecting to b25lcirdb040.con.can.ibm.com...
+
+ 

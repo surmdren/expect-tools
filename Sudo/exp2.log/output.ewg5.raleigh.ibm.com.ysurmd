@@ -1,0 +1,4 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@ewg5.raleigh.ibm.com
+Connecting to ewg5.raleigh.ibm.com...
+
+ 

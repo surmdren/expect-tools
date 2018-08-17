@@ -1,0 +1,14 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b03acilog010.ahe.boulder.ibm.com
+Connecting to b03acilog010.ahe.boulder.ibm.com...
+Warning: Permanently added 'b03acilog010.ahe.boulder.ibm.com' (RSA) to the list of known hosts.
+ysurmd's Password:
+Duo two-factor login for surmdren@cn.ibm.com
+
+Enter a passcode or select one of the following options:
+
+ 1. Duo Push to +XX XXX XXXX 6615
+ 2. Phone call to +XX XXX XXXX 6615
+ 3. SMS passcodes to +XX XXX XXXX 6615
+
+Passcode or option (1-3): 
+ 

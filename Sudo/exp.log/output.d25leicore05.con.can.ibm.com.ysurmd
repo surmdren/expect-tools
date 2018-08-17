@@ -1,0 +1,43 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@d25leicore05.con.can.ibm.com
+Connecting to d25leicore05.con.can.ibm.com...
+Warning: Permanently added 'd25leicore05.con.can.ibm.com' (RSA) to the list of known hosts.
+ysurmd@d25leicore05.con.can.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@d25leicore05.con.can.ibm.com
+ysurmd@d25leicore05.con.can.ibm.com's password: .waiting for prompt.
+Last login: Thu Apr 26 07:22:49 2018 from 9.200.79.60
+IBM's internal systems must only be used for conducting IBM's business or for purposes authorized by IBM management..
+Use is subject to audit at any time by IBM management.
+IBM's internal systems must only be used for conducting IBM's business or for purposes authorized by IBM management
+Use is subject to audit at any time by IBM management
+]0;ysurmd@d25leicore05:~[?1034h[ysurmd@d25leicore05 ~]$ export LANG=en_US.UTF-8
+]0;ysurmd@d25leicore05:~[ysurmd@d25leicore05 ~]$ whoami
+ysurmd
+]0;ysurmd@d25leicore05:~[ysurmd@d25leicore05 ~]$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd
+uid=19034(ysurmd) gid=100(users) groups=100(users),10(wheel)
+]0;ysurmd@d25leicore05:~[ysurmd@d25leicore05 ~]$ chmod 777 /tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd
+]0;ysurmd@d25leicore05:~[ysurmd@d25leicore05 ~]$ echo Work done
+Work done
+]0;ysurmd@d25leicore05:~[ysurmd@d25leicore05 ~]$ spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@d25leicore05.con.can.ibm.com
+Connecting to d25leicore05.con.can.ibm.com...
+ysurmd@d25leicore05.con.can.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd to inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd                                    0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd                                  100%   61     0.1KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.d25leicore05.con.can.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@d25leicore05.con.can.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.29.76.182' to the list of known hosts.
+ysurmd@d25leicore05.con.can.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

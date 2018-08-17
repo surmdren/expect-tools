@@ -1,0 +1,6 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@linzdom01iela.pok.ibm.com
+Connecting to linzdom01iela.pok.ibm.com...
+Warning: Permanently added 'linzdom01iela.pok.ibm.com' (RSA) to the list of known hosts.
+Password: 
+Password: 
+ 

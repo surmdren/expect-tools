@@ -1,0 +1,47 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b25acidbw14.con.can.ibm.com
+Connecting to b25acidbw14.con.can.ibm.com...
+Warning: Permanently added 'b25acidbw14.con.can.ibm.com' (RSA) to the list of known hosts.
+ysurmd@b25acidbw14.con.can.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:01    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b25acidbw14.con.can.ibm.com
+ysurmd@b25acidbw14.con.can.ibm.com's password: .waiting for prompt.
+Last login: Fri Jun 22 04:49:15 EDT 2018 on ssh from 9.200.79.60
+*******************************************************************************
+*                           IMPORTANT NOTE                                    *
+*  1) IBM's internal systems must only be used for conducting IBM's business  *
+*     or for purposes authorized by IBM management.                           *
+*  2) Use is subject to audit at any time by IBM management.                  *
+*  3) Data classified higher that IBM Confidential is NOT allowed on this     *
+*     system!                                                                 *
+*  4) You MUST ENSURE you have proper permissions on your files!              *
+*******************************************************************************
+
+$ export LANG=en_US.UTF-8
+whoami
+$ ysurmd
+$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd
+chmod 777 /tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd
+echo Work done
+uid=481(ysurmd) gid=1(staff) grospawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b25acidbw14.con.can.ibm.com
+Connecting to b25acidbw14.con.can.ibm.com...
+ysurmd@b25acidbw14.con.can.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd to inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd                                     0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd                                   100%   60     0.1KB/s   00:00    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.b25acidbw14.con.can.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@b25acidbw14.con.can.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.23.88.127' to the list of known hosts.
+ysurmd@b25acidbw14.con.can.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

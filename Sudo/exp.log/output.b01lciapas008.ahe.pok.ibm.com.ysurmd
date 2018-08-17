@@ -1,0 +1,7 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b01lciapas008.ahe.pok.ibm.com
+Connecting to b01lciapas008.ahe.pok.ibm.com...
+Warning: Permanently added 'b01lciapas008.ahe.pok.ibm.com' (RSA) to the list of known hosts.
+ysurmd@b01lciapas008.ahe.pok.ibm.com's password: 
+Permission denied, please try again.
+ysurmd@b01lciapas008.ahe.pok.ibm.com's password: 
+ 

@@ -1,0 +1,60 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b03aciops002.ahe.boulder.ibm.com
+Connecting to b03aciops002.ahe.boulder.ibm.com...
+Warning: Permanently added 'b03aciops002.ahe.boulder.ibm.com' (RSA) to the list of known hosts.
+ysurmd@b03aciops002.ahe.boulder.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b03aciops002.ahe.boulder.ibm.com
+ysurmd@b03aciops002.ahe.boulder.ibm.com's password: .waiting for prompt.
+Last login: Fri Jun 22 08:51:46 GMT 2018 on ssh from 9.200.79.60
+*******************************************************************
+*                                                                 *
+*  IBM's internal systems must only be used for conducting IBM's  *
+*  business, or for purposes authorized by IBM management.        *
+*                                                                 *
+*  Use is subject to audit at any time by IBM management          *
+*                                                                 *
+*  If you are not an authorised user, LOGOUT immediately.         *
+*                                                                 *
+*  THIS SYSTEM IS CURRENTLY BEING MANAGED BY IGA CHEF             *
+*                                                                 *
+*                       IBM Confidential                          *
+*                                                                 *
+*******************************************************************
+For more detailed instructions how to customize this message
+check at
+https://github.ibm.com/IGA-CHEF/cookbook_motd_chef
+
+You can reach us at the Community link:
+https://ibm.biz/BditLd
+
+And please check the Chef development standards and
+best practices:
+http://ibm.biz/Bditu5$ export LANG=en_US.UTF-8
+whoami
+$ ysurmd
+$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd
+chmod 777 /tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd
+echo Work done
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@b03aciops002.ahe.boulder.ibm.com
+Connecting to b03aciops002.ahe.boulder.ibm.com...
+ysurmd@b03aciops002.ahe.boulder.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd to inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd                                0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd                              100%   50     0.1KB/s   00:00    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.b03aciops002.ahe.boulder.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@b03aciops002.ahe.boulder.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.17.131.33' to the list of known hosts.
+ysurmd@b03aciops002.ahe.boulder.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

@@ -1,0 +1,6 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@y01acddb001.ahe.pok.ibm.com
+Connecting to y01acddb001.ahe.pok.ibm.com...
+ssh: Could not resolve hostname y01acddb001.ahe.pok.ibm.com: Name or service not known
+Couldn't read packet: Connection reset by peer
+
+ 

@@ -1,0 +1,56 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@apextst.pok.ibm.com
+Connecting to apextst.pok.ibm.com...
+Warning: Permanently added 'apextst.pok.ibm.com' (RSA) to the list of known hosts.
+ysurmd@apextst.pok.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@apextst.pok.ibm.com
+ysurmd@apextst.pok.ibm.com's password: .waiting for prompt.
+Last login: Thu Jun 21 09:09:28 EDT 2018 on ssh from 9.197.246.90
+*******************************************************************************
+*                                                                             *
+*                                                                             *
+*  Welcome to AIX                                                             *
+*  GSA cell:        pokgsa.ibm.com        GSA level:   2.1.0.23               *
+*                                                                             *
+*  The highest level of data allowed on this system is:                       *
+*                    IBM CONFIDENTIAL                                         *
+*                                                                             *
+*  IBM's internal systems must only be used for conducting                    *
+*  IBM's business or for purposes authorized by IBM Management.               *
+*                                                                             *
+*  Use is subject to audit at any time by IBM Management.                     *
+*                                                                             *
+*                                                                             *
+*                                                                             *
+*  Contact apexsup@us.ibm.com for test or production AIX server user IDs      *
+*                                                                             *
+*******************************************************************************
+$ export LANG=en_US.UTF-8
+whoami
+$ ysurmd
+$ sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd
+chmod 777 /tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd
+echo Work done
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@apextst.pok.ibm.com
+Connecting to apextst.pok.ibm.com...
+ysurmd@apextst.pok.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd to inplacelogic.out.apextst.pok.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd                                             0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd                                           100%   29     0.0KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.apextst.pok.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@apextst.pok.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.56.213.46' to the list of known hosts.
+ysurmd@apextst.pok.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

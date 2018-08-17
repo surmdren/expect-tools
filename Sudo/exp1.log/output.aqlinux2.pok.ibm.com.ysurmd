@@ -1,0 +1,39 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@aqlinux2.pok.ibm.com
+Connecting to aqlinux2.pok.ibm.com...
+Warning: Permanently added 'aqlinux2.pok.ibm.com' (RSA) to the list of known hosts.
+Password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:00    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@aqlinux2.pok.ibm.com
+Password: .waiting for prompt.
+Last login: Tue Apr 24 04:20:32 2018 from 9.200.79.60
+[?1034hysurmd@aqlinux2:~> export LANG=en_US.UTF-8
+ysurmd@aqlinux2:~> whoami
+ysurmd
+ysurmd@aqlinux2:~> sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd
+uid=20696(ysurmd) gid=100(users) groups=100(users),107(support)
+ysurmd@aqlinux2:~> chmod 777 /tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd
+ysurmd@aqlinux2:~> echo Work done
+Work done
+ysurmd@aqlinux2:~> spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@aqlinux2.pok.ibm.com
+Connecting to aqlinux2.pok.ibm.com...
+Password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd to inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd                                            0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd                                          100%   64     0.1KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.aqlinux2.pok.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@aqlinux2.pok.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.56.212.47' to the list of known hosts.
+Password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

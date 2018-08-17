@@ -1,0 +1,57 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@viotivcli01.pok.ibm.com
+Connecting to viotivcli01.pok.ibm.com...
+Warning: Permanently added 'viotivcli01.pok.ibm.com' (RSA) to the list of known hosts.
+ysurmd@viotivcli01.pok.ibm.com's password: 
+sftp> mkdir /tmp/exp.log
+sftp> chmod 777 /tmp/exp.log
+Changing mode on /tmp/exp.log
+sftp> put test.ksh /tmp/exp.log
+Uploading test.ksh to /tmp/exp.log/test.ksh
+test.ksh                                                                                             0%    0     0.0KB/s   --:-- ETAtest.ksh                                                                                           100%    3     0.0KB/s   00:01    
+sftp> chmod 777 /tmp/exp.log/test.ksh
+Changing mode on /tmp/exp.log/test.ksh
+sftp> 
+spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@viotivcli01.pok.ibm.com
+ysurmd@viotivcli01.pok.ibm.com's password: .waiting for prompt.
+Last login: Fri Jun 22 08:44:36 2018 on ssh from 9.200.79.60
+*******************************************************************************
+*  Welcome to IBM AIX 7.1.1     on   viotivcli01.pok.ibm.com                  *
+*                                                                             *
+*  Network address: 9.56.213.223          RISC model:  9117-MMC               *
+*  GSA cell:        a03gsa.ibm.com        GSA level:   3.1.0.33               *
+*                                                                             *
+*  The highest level of data allowed on this system is:                       *
+*                    IBM CONFIDENTIAL                                         *
+*                                                                             *
+*  IBM's internal systems must only be used for conducting                    *
+*  IBM's business or for purposes authorized by IBM Management.               *
+*                                                                             *
+*  Use is subject to audit at any time by IBM Management.                     *
+*                                                                             *
+*                                                                             *
+*  Contact unixsup@us.ibm.com for test or production AIX server user IDs      *
+*                                                                             *
+*******************************************************************************
+[viotivcli01:/home/ysurmd] # export LANG=en _US.UTF-8
+[viotivcli01:/home/ysurmd] # whoami
+ysurmd
+[viotivcli01:/home/ysurmd] # sh /tmp/exp.log/test.ksh | tee /tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd
+uid=246(ysurmd) gid=1(staff) groups=202(leaninp4)
+[viotivcli01:/home/ysurmd] # chmod 777 /tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd
+[viotivcli01:/home/ysurmd] # echo Work done
+Work done
+[viotivcli01:/home/ysurmd] # spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@viotivcli01.pok.ibm.com
+Connecting to viotivcli01.pok.ibm.com...
+ysurmd@viotivcli01.pok.ibm.com's password: 
+sftp> mget /tmp/exp.log/inplacelogic.out.*
+Fetching /tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd to inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd
+/tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd                                         0%    0     0.0KB/s   --:-- ETA/tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd                                       100%   50     0.1KB/s   00:01    
+sftp> rm /tmp/exp.log/*
+Removing /tmp/exp.log/inplacelogic.out.viotivcli01.pok.ibm.com.ysurmd
+Removing /tmp/exp.log/test.ksh
+sftp> rmdir /tmp/exp.log
+sftp> 
+spawn scp -r ysurmd@viotivcli01.pok.ibm.com:/tmp/HC/HCLauncher/report report
+Warning: Permanently added the RSA host key for IP address '9.56.213.223' to the list of known hosts.
+ysurmd@viotivcli01.pok.ibm.com's password: 
+scp: /tmp/HC/HCLauncher/report: No such file or directory

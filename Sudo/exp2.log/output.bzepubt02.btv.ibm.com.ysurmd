@@ -1,0 +1,7 @@
+spawn sftp -oStrictHostKeyChecking=no -oCheckHostIP=no ysurmd@bzepubt02.btv.ibm.com
+Connecting to bzepubt02.btv.ibm.com...
+Warning: Permanently added 'bzepubt02.btv.ibm.com' (RSA) to the list of known hosts.
+ysurmd@bzepubt02.btv.ibm.com's password: 
+Permission denied, please try again.
+ysurmd@bzepubt02.btv.ibm.com's password: 
+ 
