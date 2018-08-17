@@ -103,6 +103,8 @@ expect "sftp>" {send "quit\r";set ftppush_result 0}
 send_user "\n"
 }
 
+set timeout 5 
+
 if {$upload_ksh == 0} {
 
 spawn ssh -t -oStrictHostKeyChecking=no -oCheckHostIP=no $myID@$SERVER
@@ -174,12 +176,15 @@ expect "\[#|$|>|~\]*" {send "export LANG=en_US.UTF-8\r";send "sudo su - \r"}
 expect {
 	"*assword*" {send "$myPWD\r"}
 	"assword for $INSTUSER:" {send "$myPWD\r"}
+        "#" {send "whoami\r"}
+        "]" {send "whoami\r"}
 }
 sleep 1
 expect {
         "assword:" {send_user "failed to su \r";set ftppull 0;puts $resultsSudo "$SERVER ";send_user "\n ";exit}
         "does not exist" {send "echo User ID not found any more\r"}
         "\[#|$|>|~\]*" {send "whoami\r"}
+        "]" {send "whoami\r"}
 }
 sleep 2
 expect {
@@ -208,13 +213,13 @@ if {$upload_ksh == 1}  {
 	getANDclean $myID $SERVER $myPWD $dir
 }
 
-spawn scp -r $myID@$SERVER:/tmp/HC/HCLauncher/report .
-expect {
-        "*assword:"
-           {
-              send "$myPWD\n"
-           }
-        }
+#spawn scp -r $myID@$SERVER:/tmp/HC/HCLauncher/report .
+#expect {
+#        "*assword:"
+#           {
+#              send "$myPWD\n"
+#           }
+#        }
 
 close $resultsOK
 close $resultsFail
